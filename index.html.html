@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<title>Abawei — Ultimate Business Launchpad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;width:100%;background:#000;}
+body{font-family:'Alexandria',sans-serif;color:#fff;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#000;}
+::-webkit-scrollbar-thumb{background:#fcb500;border-radius:2px;}
+
+@keyframes fadeUp   {from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn   {from{opacity:0;}to{opacity:1;}}
+@keyframes spinGold {from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes float    {0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 30px #fcb50044;}50%{box-shadow:0 0 58px #fcb50099;}}
+@keyframes shimmer  {0%{background-position:-200% center;}100%{background-position:200% center;}}
+@keyframes slideUp  {from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+@keyframes popIn    {from{opacity:0;transform:scale(.85);}to{opacity:1;transform:scale(1);}}
+@keyframes checkPop {0%{transform:scale(0);}70%{transform:scale(1.25);}100%{transform:scale(1);}}
+@keyframes progressBar{from{width:0;}to{width:100%;}}
+
+.anim-fadeUp {animation:fadeUp .55s ease both;}
+.anim-slideUp{animation:slideUp .5s ease both;}
+.anim-popIn  {animation:popIn .45s cubic-bezier(.34,1.56,.64,1) both;}
+.float-anim  {animation:float 3.2s ease-in-out infinite;display:inline-block;}
+.pulse-anim  {animation:pulseGlow 2.5s ease-in-out infinite;}
+.spin        {animation:spinGold .7s linear infinite;}
+
+/* ── Layout ── */
+#app-container{max-width:430px;margin:0 auto;position:relative;min-height:100vh;}
+.screen{min-height:100vh;background:#000;padding-bottom:110px;position:relative;}
+.screen-header{padding:52px 24px 24px;}
+.section-label{font-size:10px;font-weight:700;color:#555;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;}
+
+/* ── Reusable ── */
+.badge{display:inline-block;padding:4px 12px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.gold-line{width:52px;height:3px;background:linear-gradient(90deg,#fcb500,transparent);border-radius:2px;margin:12px 0;}
+
+/* ── Buttons ── */
+.btn-gold{width:100%;padding:15px;border-radius:100px;background:#fcb500;border:none;color:#000;font-size:14px;font-weight:800;cursor:pointer;font-family:'Alexandria',sans-serif;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 8px 28px #fcb50044;transition:transform .18s,box-shadow .18s;}
+.btn-gold:hover{transform:scale(1.03);box-shadow:0 10px 36px #fcb50066;}
+.btn-gold:disabled{background:#333;color:#666;box-shadow:none;cursor:not-allowed;transform:none;}
+.btn-outline{width:100%;padding:14px;border-radius:100px;background:transparent;border:1px solid #333;color:#888;font-size:13px;font-weight:700;cursor:pointer;font-family:'Alexandria',sans-serif;transition:all .2s;}
+.btn-outline:hover{border-color:#555;color:#bbb;}
+.btn-ghost{background:none;border:none;cursor:pointer;font-family:'Alexandria',sans-serif;transition:color .2s;}
+
+/* ── Inputs ── */
+.abawei-input{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #222;background:#0a0a0a;color:#fff;font-size:14px;font-family:'Alexandria',sans-serif;outline:none;transition:border-color .2s;line-height:1.5;}
+.abawei-input:focus{border-color:#fcb50077;}
+.abawei-input::placeholder{color:#444;}
+.abawei-textarea{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #222;background:#0a0a0a;color:#fff;font-size:13px;font-family:'Alexandria',sans-serif;min-height:90px;resize:none;outline:none;line-height:1.6;transition:border-color .2s;}
+.abawei-textarea:focus{border-color:#fcb50077;}
+.input-group{margin-bottom:14px;}
+.input-label{font-size:11px;font-weight:700;color:#666;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;display:block;}
+.input-error{font-size:11px;color:#ff6b6b;margin-top:4px;display:none;}
+.input-wrap{position:relative;}
+.input-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;color:#555;pointer-events:none;}
+
+/* ── Cards ── */
+.card{border-radius:20px;background:#080808;border:1px solid #1a1a1a;padding:18px 16px;}
+.card-gold{border-radius:20px;background:linear-gradient(135deg,#1a1200,#0d0900);border:1px solid #fcb50033;padding:20px;}
+
+/* ── Auth specific ── */
+.auth-screen{min-height:100vh;background:#000;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+.auth-bg-glow{position:absolute;top:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,#fcb50018,transparent 70%);filter:blur(50px);pointer-events:none;}
+.auth-bg-glow2{position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,#fcb50010,transparent 70%);filter:blur(40px);pointer-events:none;}
+.auth-top{padding:48px 24px 0;position:relative;z-index:1;}
+.auth-body{flex:1;padding:28px 24px 40px;position:relative;z-index:1;overflow-y:auto;}
+.auth-logo-mini{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;}
+.auth-step-pill{display:flex;align-items:center;gap:6px;margin-bottom:20px;}
+.auth-step-dot{width:8px;height:8px;border-radius:50%;background:#333;transition:all .3s;}
+.auth-step-dot.active{background:#fcb500;box-shadow:0 0 8px #fcb50088;}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:18px 0;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#1a1a1a;}
+.auth-divider span{font-size:11px;color:#444;font-weight:600;text-transform:uppercase;letter-spacing:.08em;}
+
+/* ── OTP boxes ── */
+.otp-grid{display:flex;gap:10px;justify-content:center;margin:24px 0;}
+.otp-box{width:52px;height:60px;border-radius:14px;border:2px solid #222;background:#0a0a0a;color:#fff;font-size:22px;font-weight:800;text-align:center;outline:none;font-family:'Alexandria',sans-serif;transition:border-color .2s;}
+.otp-box:focus{border-color:#fcb500;}
+.otp-box.filled{border-color:#fcb50066;}
+
+/* ── Success overlay ── */
+.success-overlay{position:fixed;inset:0;background:rgba(0,0,0,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:32px;}
+.success-check{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#fcb500,#e6a300);display:flex;align-items:center;justify-content:center;font-size:38px;animation:checkPop .5s cubic-bezier(.34,1.56,.64,1) both;animation-delay:.2s;opacity:0;margin-bottom:24px;}
+.success-check.shown{opacity:1;}
+
+/* ── Bottom Nav ── */
+#bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:999;background:rgba(0,0,0,.93);backdrop-filter:blur(20px);border-top:1px solid #1a1a1a;padding:8px 0 18px;display:flex;justify-content:space-around;}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;padding:4px 10px;transition:all .2s;}
+.nav-icon{font-size:19px;transition:all .2s;}
+.nav-label{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;font-family:'Alexandria',sans-serif;transition:all .2s;}
+.nav-btn.active .nav-icon{color:#fcb500;filter:drop-shadow(0 0 6px #fcb50088);}
+.nav-btn.active .nav-label{color:#fcb500;}
+.nav-btn:not(.active) .nav-icon{color:#3a3a3a;}
+.nav-btn:not(.active) .nav-label{color:#3a3a3a;}
+
+/* ── Tabs ── */
+.tab-bar{display:flex;gap:4px;padding:0 24px 24px;}
+.tab-btn{flex:1;padding:10px;border-radius:100px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Alexandria',sans-serif;transition:all .2s;}
+.tab-btn.active{background:#fcb500;color:#000;}
+.tab-btn:not(.active){background:#111;color:#555;}
+
+/* ── Stats ── */
+.stat-grid{display:flex;border-radius:16px;overflow:hidden;border:1px solid #1a1a1a;margin-top:24px;}
+.stat-cell{flex:1;padding:14px 6px;text-align:center;border-right:1px solid #1a1a1a;}
+.stat-cell:last-child{border-right:none;}
+.stat-cell:nth-child(odd){background:#0a0a0a;}
+.stat-cell:nth-child(even){background:#050505;}
+.stat-num{font-size:20px;font-weight:900;color:#fcb500;font-family:'Alexandria',sans-serif;}
+.stat-lbl{font-size:8px;color:#555;margin-top:2px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;}
+
+/* ── Action Grid ── */
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.action-card{padding:20px 16px;border-radius:20px;border:1px solid #1c1c1c;cursor:pointer;text-align:left;background:#080808;transition:all .2s;position:relative;overflow:hidden;}
+.action-card:hover{transform:scale(1.03);border-color:#fcb50044;}
+
+/* ── Promo Banner ── */
+.promo-banner{border-radius:24px;padding:24px;overflow:hidden;position:relative;background:linear-gradient(135deg,#fcb500 0%,#e6a300 100%);}
+.promo-c1{position:absolute;right:-20px;top:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.15);pointer-events:none;}
+.promo-c2{position:absolute;right:20px;bottom:-30px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.1);pointer-events:none;}
+
+/* ── Activity ── */
+.activity-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #111;}
+.activity-row:last-child{border-bottom:none;}
+.activity-icon{width:40px;height:40px;border-radius:12px;background:#111;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fcb500;flex-shrink:0;}
+
+/* ── Plan/Pricing ── */
+.plan-card{border-radius:24px;padding:24px;position:relative;overflow:hidden;}
+.plan-popular-tag{position:absolute;top:14px;right:16px;font-size:8px;font-weight:800;color:#000;background:#fcb500;padding:3px 10px;border-radius:100px;letter-spacing:.1em;text-transform:uppercase;}
+.portfolio-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.portfolio-item{aspect-ratio:4/3;border-radius:16px;border:1px solid #1a1a1a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
+.brand-item{display:flex;align-items:center;gap:16px;padding:18px 16px;border-radius:20px;background:#080808;border:1px solid #1a1a1a;}
+.brand-item-icon{width:44px;height:44px;border-radius:14px;background:#111;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fcb500;flex-shrink:0;}
+.feat-row{display:flex;align-items:center;gap:10px;}
+.feat-dot{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.name-card{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:14px;background:#0a0a0a;border:1px solid #1a1a1a;}
+.step-row{display:flex;gap:16px;margin-bottom:20px;position:relative;}
+.step-row-line::after{content:'';position:absolute;left:19px;top:42px;width:2px;height:calc(100%);background:#1c1c1c;}
+.step-dot{width:40px;height:40px;border-radius:12px;border:1px solid #252525;background:#0a0a0a;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;font-size:10px;font-weight:800;color:#444;font-family:'Alexandria',sans-serif;}
+
+/* ── Splash ── */
+#splash-screen{min-height:100vh;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden;}
+.splash-grain{position:absolute;inset:0;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;}
+.splash-glow{position:absolute;top:18%;left:50%;transform:translateX(-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#fcb50020,transparent 70%);filter:blur(40px);pointer-events:none;}
+
+/* ── Onboarding ── */
+#onboarding-screen{min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:background .5s;}
+.ob-topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;}
+.ob-dots{display:flex;gap:6px;padding:0 24px 24px;justify-content:center;}
+.ob-dot{height:4px;border-radius:2px;transition:all .4s;}
+.ob-body{flex:1;padding:0 28px 48px;display:flex;flex-direction:column;}
+
+/* ── Notification toast ── */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1a1a1a;border:1px solid #333;border-radius:14px;padding:12px 20px;font-size:13px;font-weight:600;color:#fff;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;max-width:90vw;text-align:center;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.success{border-color:#fcb50066;color:#fcb500;}
+
+/* ── Select ── */
+.abawei-select{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #222;background:#0a0a0a;color:#fff;font-size:14px;font-family:'Alexandria',sans-serif;outline:none;appearance:none;-webkit-appearance:none;transition:border-color .2s;cursor:pointer;}
+.abawei-select:focus{border-color:#fcb50077;}
+.abawei-select option{background:#111;color:#fff;}
+.select-wrap{position:relative;}
+.select-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:14px;color:#555;pointer-events:none;}
+
+/* ── Progress indicator ── */
+.form-progress{display:flex;align-items:center;gap:6px;margin-bottom:24px;}
+.form-step{display:flex;align-items:center;gap:6px;}
+.form-step-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;transition:all .3s;}
+.form-step-line{flex:1;height:2px;background:#1a1a1a;border-radius:1px;}
+</style>
+</head>
+<body>
+<div id="root"><div id="app-container"></div></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+//  ABAWEI  ·  Standalone HTML App  ·  v2
+// ═══════════════════════════════════════════════════════════════════════════
+const C = document.getElementById('app-container');
+
+// ── State ──────────────────────────────────────────────────────────────────
+let PHASE     = 'splash';     // splash | onboarding | auth | app
+let SCREEN    = 'home';
+let AUTH_VIEW = 'login';      // login | register | verify | aprf | success
+let OB_IDX    = 0;
+let PLAN_TAB  = 0;
+let REGISTERED_EMAIL = '';
+let VERIFY_CODE  = ''; // simulated 6-digit code
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+const badge  = (t,c='#fcb500')=>`<span class="badge" style="background:${c}22;color:${c};border:1px solid ${c}44;">${t}</span>`;
+const goldLn = ()=>'<div class="gold-line"></div>';
+const arrow  = (c='#000',s=17)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
+const chk    = (c='#fcb500',s=11)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+const eye    = (s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+const mail   = (s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>`;
+const user   = (s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+const lock   = (s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+const phone  = (s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.39 18a19.5 19.5 0 0 1-5-5A19.79 19.79 0 0 1 3.1 4.18 2 2 0 0 1 5.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L9.91 9.91a16 16 0 0 0 5.1 5.1l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
+const mapPin = (s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+const idCard = (s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M6 15h.01M10 15h4"/></svg>`;
+
+// counter animation
+function counter(el,end,sfx=''){
+  let v=0,step=Math.max(1,Math.ceil(end/60));
+  const t=setInterval(()=>{v+=step;if(v>=end){v=end;clearInterval(t);}el.textContent=v.toLocaleString()+sfx;},20);
+}
+
+// toast
+function toast(msg,type='',dur=3200){
+  let t=document.getElementById('abawei-toast');
+  if(!t){t=document.createElement('div');t.id='abawei-toast';t.className='toast';document.body.appendChild(t);}
+  t.textContent=msg; t.className='toast'+(type?' '+type:'');
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+// generate OTP code
+function makeCode(){return Math.floor(100000+Math.random()*900000).toString();}
+
+// ── Nav ────────────────────────────────────────────────────────────────────
+const NAV_ITEMS=[{id:'home',icon:'⚡',label:'Home'},{id:'plan',icon:'✦',label:'Plan'},{id:'comply',icon:'⬡',label:'Comply'},{id:'brand',icon:'◈',label:'Brand'},{id:'pricing',icon:'★',label:'Plans'}];
+function renderNav(){
+  let old=document.getElementById('bottom-nav'); if(old)old.remove();
+  const nav=document.createElement('div'); nav.id='bottom-nav';
+  nav.innerHTML=NAV_ITEMS.map(n=>`<button class="nav-btn${SCREEN===n.id?' active':''}" data-id="${n.id}"><span class="nav-icon">${n.icon}</span><span class="nav-label">${n.label}</span></button>`).join('');
+  nav.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>{SCREEN=b.dataset.id;renderApp();}));
+  C.appendChild(nav);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  SPLASH
+// ═══════════════════════════════════════════════════════════════════════════
+function renderSplash(){
+  C.innerHTML=`
+  <div id="splash-screen">
+    <div class="splash-grain"></div>
+    <div class="splash-glow"></div>
+    <div style="text-align:center;position:relative;z-index:1;animation:fadeUp .8s ease both;">
+      <div class="float-anim">
+        <div class="pulse-anim" style="width:72px;height:72px;border-radius:20px;background:#fcb500;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;">
+          <span style="font-size:34px;font-weight:900;color:#000;font-family:'Alexandria',sans-serif;">A</span>
+        </div>
+      </div>
+      <h1 style="font-size:54px;font-weight:900;letter-spacing:-2px;color:#fff;line-height:1;">Aba<span style="color:#fcb500;">wei</span></h1>
+      <p style="margin-top:10px;font-size:12px;font-weight:400;letter-spacing:.26em;color:#777;text-transform:uppercase;">Ultimate Business Launchpad</p>
+      <div style="display:flex;gap:6px;justify-content:center;margin-top:32px;">
+        <span style="padding:5px 14px;border-radius:100px;font-size:10px;font-weight:700;background:#fcb500;color:#000;">Plan</span>
+        <span style="padding:5px 14px;border-radius:100px;font-size:10px;font-weight:700;background:transparent;color:#555;border:1px solid #333;">Comply</span>
+        <span style="padding:5px 14px;border-radius:100px;font-size:10px;font-weight:700;background:transparent;color:#555;border:1px solid #333;">Brand</span>
+      </div>
+      <p style="margin-top:40px;font-size:15px;color:#aaa;max-width:300px;line-height:1.8;margin-left:auto;margin-right:auto;">
+        AI powered life-enhancing business ecosystem for SMEs in <span style="color:#fcb500;font-weight:600;">Tanzania</span>
+      </p>
+      <button id="splash-cta" class="btn-gold" style="width:auto;padding:16px 52px;margin:48px auto 0;display:inline-flex;">
+        Get Started ${arrow('#000',18)}
+      </button>
+      <p style="margin-top:20px;font-size:12px;color:#444;">Tanzania's #1 Business Platform</p>
+    </div>
+  </div>`;
+  document.getElementById('splash-cta').addEventListener('click',()=>{PHASE='onboarding';renderOnboarding();});
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  ONBOARDING
+// ═══════════════════════════════════════════════════════════════════════════
+const OB=[
+  {icon:'✦',plan:'Starter · Free',accent:'#fcb500',bg:'linear-gradient(135deg,#111 60%,#1a1400 100%)',
+   title:'Plan Your Business',sub:'From idea to blueprint in minutes',
+   desc:'Generate a powerful business name and a professional business plan with AI — completely free.',
+   feats:['AI Business Name Generator','Full Business Plan Generator','Market Analysis Overview','Financial Projections Template']},
+  {icon:'⬡',plan:'Pro · Recommended',accent:'#ffffff',bg:'linear-gradient(135deg,#0a0a0a 60%,#111 100%)',
+   title:'Comply & Register',sub:'Become 100% legal in Tanzania',
+   desc:'Full company registration handled end-to-end. From BRELA to TRA — we do it all for you.',
+   feats:['BRELA Company Registration','TRA Tax Registration (TIN)','Business Licence Support','Legal Document Drafting']},
+  {icon:'◈',plan:'Premium',accent:'#fcb500',bg:'linear-gradient(135deg,#0d0900 60%,#1a1000 100%)',
+   title:'Brand Your Business',sub:'Look like the leader you are',
+   desc:'Professional logo, company profile, and a stunning website — your complete brand identity.',
+   feats:['Custom Logo Design','Company Profile PDF','Professional Website Build','Brand Guidelines Kit']},
+];
+function renderOnboarding(){
+  const s=OB[OB_IDX];
+  const dots=OB.map((_,i)=>`<div class="ob-dot" style="width:${i===OB_IDX?32:12}px;background:${i===OB_IDX?s.accent:'#333'};"></div>`).join('');
+  const feats=s.feats.map(f=>`<div class="feat-row" style="margin-bottom:10px;"><div class="feat-dot" style="background:${s.accent}22;">${chk(s.accent,10)}</div><span style="font-size:13px;color:#ddd;font-weight:500;">${f}</span></div>`).join('');
+  C.innerHTML=`
+  <div id="onboarding-screen" style="background:${s.bg};">
+    <div class="ob-topbar">
+      <span class="auth-logo-mini">Aba<span style="color:#fcb500;">wei</span></span>
+      <button id="ob-skip" class="btn-ghost" style="color:#555;font-size:12px;letter-spacing:.06em;">SKIP</button>
+    </div>
+    <div class="ob-dots">${dots}</div>
+    <div class="ob-body">
+      <div style="margin-bottom:24px;">
+        <div style="width:80px;height:80px;border-radius:24px;border:2px solid ${s.accent}44;background:${s.accent}11;display:flex;align-items:center;justify-content:center;font-size:34px;color:${s.accent};">${s.icon}</div>
+      </div>
+      ${badge(s.plan,s.accent)}
+      <h2 style="font-size:34px;font-weight:900;color:#fff;margin-top:14px;line-height:1.1;letter-spacing:-1px;">${s.title}</h2>
+      <p style="font-size:14px;color:${s.accent};font-weight:600;margin-top:6px;">${s.sub}</p>
+      ${goldLn()}
+      <p style="font-size:14px;color:#999;line-height:1.7;margin-top:4px;">${s.desc}</p>
+      <div style="margin-top:28px;">${feats}</div>
+      <div style="flex:1;min-height:28px;"></div>
+      <div style="display:flex;gap:12px;margin-top:28px;">
+        ${OB_IDX>0?`<button id="ob-back" class="btn-outline" style="flex:1;">Back</button>`:''}
+        <button id="ob-next" class="btn-gold" style="flex:2;background:${s.accent};">
+          ${OB_IDX<2?'Next':'Launch My Business'} ${arrow('#000',16)}
+        </button>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById('ob-skip').addEventListener('click',goAuth);
+  document.getElementById('ob-next').addEventListener('click',()=>{OB_IDX<2?(OB_IDX++,renderOnboarding()):goAuth();});
+  if(OB_IDX>0) document.getElementById('ob-back').addEventListener('click',()=>{OB_IDX--;renderOnboarding();});
+}
+function goAuth(){PHASE='auth';AUTH_VIEW='login';renderAuth();}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  AUTH  —  Login / Register / Verify / APRF / Success
+// ═══════════════════════════════════════════════════════════════════════════
+function renderAuth(){
+  if(AUTH_VIEW==='login')     return renderLogin();
+  if(AUTH_VIEW==='register')  return renderRegister();
+  if(AUTH_VIEW==='verify')    return renderVerify();
+  if(AUTH_VIEW==='aprf')      return renderAPRF();
+  if(AUTH_VIEW==='success')   return renderSuccess();
+}
+
+/* ── shared auth header ─────────────────────────────────────────── */
+function authWrap(bodyHTML){
+  C.innerHTML=`
+  <div class="auth-screen">
+    <div class="auth-bg-glow"></div>
+    <div class="auth-bg-glow2"></div>
+    <div class="auth-top">
+      <span class="auth-logo-mini">Aba<span style="color:#fcb500;">wei</span></span>
+    </div>
+    <div class="auth-body">${bodyHTML}</div>
+  </div>`;
+}
+
+/* ── LOGIN ──────────────────────────────────────────────────────── */
+function renderLogin(){
+  authWrap(`
+    <div style="animation:slideUp .5s ease both;">
+      ${badge('Welcome Back')}
+      <h2 style="font-size:28px;font-weight:900;color:#fff;margin-top:12px;letter-spacing:-1px;line-height:1.15;">Sign in to<br><span style="color:#fcb500;">Abawei</span></h2>
+      ${goldLn()}
+      <p style="font-size:13px;color:#666;margin-bottom:28px;line-height:1.6;">Enter your credentials to continue building your business.</p>
+
+      <div class="input-group">
+        <label class="input-label">Username</label>
+        <div class="input-wrap">
+          <input class="abawei-input" id="login-user" type="text" placeholder="your_username"/>
+          <span class="input-icon" style="color:#555;">${user(16)}</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Password</label>
+        <div class="input-wrap">
+          <input class="abawei-input" id="login-pass" type="password" placeholder="••••••••" style="padding-right:46px;"/>
+          <span class="input-icon" id="eye-toggle" style="cursor:pointer;color:#555;pointer-events:all;">${eye(16)}</span>
+        </div>
+      </div>
+      <div style="text-align:right;margin-bottom:24px;margin-top:-6px;">
+        <button class="btn-ghost" style="font-size:12px;color:#fcb500;font-weight:600;">Forgot password?</button>
+      </div>
+      <button id="login-btn" class="btn-gold">Sign In ${arrow('#000',16)}</button>
+      <div class="auth-divider"><span>or</span></div>
+      <p style="text-align:center;font-size:13px;color:#666;margin-top:4px;">
+        Don't have an account?
+        <button id="go-register" class="btn-ghost" style="color:#fcb500;font-size:13px;font-weight:700;margin-left:4px;">Create Account</button>
+      </p>
+    </div>`);
+
+  // eye toggle
+  document.getElementById('eye-toggle').addEventListener('click',()=>{
+    const p=document.getElementById('login-pass');
+    p.type=p.type==='password'?'text':'password';
+  });
+  document.getElementById('login-btn').addEventListener('click',()=>{
+    const u=document.getElementById('login-user').value.trim();
+    const p=document.getElementById('login-pass').value;
+    if(!u||!p){toast('Please fill in all fields.');return;}
+    simulateLoading('login-btn',()=>{PHASE='app';SCREEN='home';renderApp();});
+  });
+  document.getElementById('go-register').addEventListener('click',()=>{AUTH_VIEW='register';renderAuth();});
+}
+
+/* ── REGISTER ───────────────────────────────────────────────────── */
+function renderRegister(){
+  authWrap(`
+    <div style="animation:slideUp .5s ease both;">
+      ${badge('Create Account','#fff')}
+      <h2 style="font-size:28px;font-weight:900;color:#fff;margin-top:12px;letter-spacing:-1px;line-height:1.15;">Join<br><span style="color:#fcb500;">Abawei</span></h2>
+      ${goldLn()}
+      <p style="font-size:13px;color:#666;margin-bottom:28px;line-height:1.6;">Enter your email to get started. We'll send you a verification code.</p>
+
+      <div class="input-group">
+        <label class="input-label">Email Address</label>
+        <div class="input-wrap">
+          <input class="abawei-input" id="reg-email" type="email" placeholder="you@example.com" style="padding-right:46px;"/>
+          <span class="input-icon">${mail(16)}</span>
+        </div>
+        <span class="input-error" id="email-err">Please enter a valid email address.</span>
+      </div>
+
+      <button id="reg-btn" class="btn-gold" style="margin-top:8px;">
+        Send Verification Code ${arrow('#000',16)}
+      </button>
+      <div class="auth-divider"><span>or</span></div>
+      <p style="text-align:center;font-size:13px;color:#666;">
+        Already have an account?
+        <button id="go-login" class="btn-ghost" style="color:#fcb500;font-size:13px;font-weight:700;margin-left:4px;">Sign In</button>
+      </p>
+    </div>`);
+
+  document.getElementById('reg-btn').addEventListener('click',()=>{
+    const emailEl=document.getElementById('reg-email');
+    const errEl=document.getElementById('email-err');
+    const email=emailEl.value.trim();
+    const valid=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if(!valid){errEl.style.display='block';emailEl.style.borderColor='#ff6b6b44';return;}
+    errEl.style.display='none'; emailEl.style.borderColor='';
+    REGISTERED_EMAIL=email;
+    VERIFY_CODE=makeCode();
+    // Simulate sending — in production this hits your API
+    simulateLoading('reg-btn',()=>{
+      toast(`Verification code sent to ${email} ✓`,'success');
+      AUTH_VIEW='verify'; renderAuth();
+    });
+  });
+  document.getElementById('go-login').addEventListener('click',()=>{AUTH_VIEW='login';renderAuth();});
+}
+
+/* ── EMAIL VERIFY ───────────────────────────────────────────────── */
+function renderVerify(){
+  authWrap(`
+    <div style="animation:slideUp .5s ease both;">
+      <div style="width:56px;height:56px;border-radius:18px;background:#fcb50022;border:1.5px solid #fcb50044;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fcb500;margin-bottom:20px;">${mail(22)}</div>
+      ${badge('Email Verification')}
+      <h2 style="font-size:26px;font-weight:900;color:#fff;margin-top:12px;letter-spacing:-1px;line-height:1.15;">Check Your<br><span style="color:#fcb500;">Email</span></h2>
+      ${goldLn()}
+      <p style="font-size:13px;color:#666;margin-bottom:6px;line-height:1.6;">
+        We sent a 6-digit code to<br>
+        <span style="color:#fcb500;font-weight:700;">${REGISTERED_EMAIL}</span>
+      </p>
+      <p style="font-size:11px;color:#444;margin-bottom:8px;">(Demo code: <span id="demo-code" style="color:#fcb500;font-weight:700;">${VERIFY_CODE}</span>)</p>
+
+      <div class="otp-grid" id="otp-grid">
+        ${[1,2,3,4,5,6].map(i=>`<input class="otp-box" id="otp${i}" maxlength="1" type="text" inputmode="numeric"/>`).join('')}
+      </div>
+
+      <button id="verify-btn" class="btn-gold">Verify &amp; Continue ${arrow('#000',16)}</button>
+      <div style="text-align:center;margin-top:18px;">
+        <span style="font-size:12px;color:#555;">Didn't receive it? </span>
+        <button id="resend-btn" class="btn-ghost" style="color:#fcb500;font-size:12px;font-weight:700;">Resend Code</button>
+      </div>
+      <button id="back-reg" class="btn-ghost" style="display:block;color:#555;font-size:12px;text-align:center;width:100%;margin-top:10px;">← Change email</button>
+    </div>`);
+
+  // OTP auto-advance
+  for(let i=1;i<=6;i++){
+    const box=document.getElementById(`otp${i}`);
+    box.addEventListener('input',()=>{
+      box.value=box.value.replace(/\D/g,'').slice(-1);
+      if(box.value&&i<6) document.getElementById(`otp${i+1}`).focus();
+      box.classList.toggle('filled',!!box.value);
+    });
+    box.addEventListener('keydown',e=>{
+      if(e.key==='Backspace'&&!box.value&&i>1) document.getElementById(`otp${i-1}`).focus();
+    });
+  }
+
+  document.getElementById('verify-btn').addEventListener('click',()=>{
+    const entered=[1,2,3,4,5,6].map(i=>document.getElementById(`otp${i}`).value).join('');
+    if(entered.length<6){toast('Enter all 6 digits.');return;}
+    if(entered!==VERIFY_CODE){toast('Incorrect code. Try again.');return;}
+    simulateLoading('verify-btn',()=>{toast('Email verified! ✓','success');AUTH_VIEW='aprf';renderAuth();});
+  });
+  document.getElementById('resend-btn').addEventListener('click',()=>{
+    VERIFY_CODE=makeCode();
+    document.getElementById('demo-code').textContent=VERIFY_CODE;
+    toast(`New code sent to ${REGISTERED_EMAIL} ✓`,'success');
+  });
+  document.getElementById('back-reg').addEventListener('click',()=>{AUTH_VIEW='register';renderAuth();});
+}
+
+/* ── APRF (Abawei Preliminary Registration Form) ────────────────── */
+const TZ_REGIONS=['Dar es Salaam','Dodoma','Mwanza','Arusha','Mbeya','Morogoro','Tanga','Zanzibar North','Zanzibar South','Pemba North','Pemba South','Kagera','Kigoma','Tabora','Singida','Iringa','Njombe','Ruvuma','Lindi','Mtwara','Pwani','Kilimanjaro','Simiyu','Geita','Katavi','Rukwa','Songwe','Kaskazini Unguja','Kusini Unguja'];
+const COUNTRIES=['Tanzania','Kenya','Uganda','Rwanda','Burundi','Ethiopia','South Africa','Nigeria','Ghana','Other'];
+
+function renderAPRF(){
+  const regOptions=TZ_REGIONS.map(r=>`<option value="${r}">${r}</option>`).join('');
+  const countryOpts=COUNTRIES.map(c=>`<option value="${c}"${c==='Tanzania'?' selected':''}>${c}</option>`).join('');
+
+  authWrap(`
+    <div style="animation:slideUp .45s ease both;">
+      <!-- Progress -->
+      <div style="display:flex;align-items:center;gap:0;margin-bottom:22px;">
+        <div style="display:flex;align-items:center;gap:6px;flex:1;">
+          <div style="width:26px;height:26px;border-radius:50%;background:#fcb500;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#000;flex-shrink:0;">${chk('#000',10)}</div>
+          <div style="flex:1;height:2px;background:#fcb50033;"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex:1;">
+          <div style="width:26px;height:26px;border-radius:50%;background:#fcb500;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#000;flex-shrink:0;">${chk('#000',10)}</div>
+          <div style="flex:1;height:2px;background:#fcb50033;"></div>
+        </div>
+        <div style="width:26px;height:26px;border-radius:50%;background:#fcb500;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#000;flex-shrink:0;">3</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:20px;">
+        <span style="font-size:9px;color:#fcb500;font-weight:700;letter-spacing:.06em;text-transform:uppercase;">Email</span>
+        <span style="font-size:9px;color:#fcb500;font-weight:700;letter-spacing:.06em;text-transform:uppercase;">Verify</span>
+        <span style="font-size:9px;color:#fcb500;font-weight:700;letter-spacing:.06em;text-transform:uppercase;">Profile</span>
+      </div>
+
+      ${badge('APRF · Required')}
+      <h2 style="font-size:24px;font-weight:900;color:#fff;margin-top:10px;letter-spacing:-.8px;line-height:1.2;">Preliminary<br><span style="color:#fcb500;">Registration Form</span></h2>
+      ${goldLn()}
+      <p style="font-size:12px;color:#555;margin-bottom:24px;line-height:1.6;">Fill in your details to complete your Abawei account. All fields are required.</p>
+
+      <!-- Full Name -->
+      <div class="input-group">
+        <label class="input-label">${user(12)} &nbsp;Full Name</label>
+        <div class="input-wrap"><input class="abawei-input" id="aprf-name" type="text" placeholder="e.g. Amani Juma Mwangi"/></div>
+      </div>
+      <!-- Email (pre-filled) -->
+      <div class="input-group">
+        <label class="input-label">${mail(12)} &nbsp;Email Address</label>
+        <div class="input-wrap"><input class="abawei-input" id="aprf-email" type="email" value="${REGISTERED_EMAIL}" style="color:#888;background:#060606;"/></div>
+      </div>
+      <!-- Phone -->
+      <div class="input-group">
+        <label class="input-label">${phone(12)} &nbsp;Phone Number</label>
+        <div class="input-wrap"><input class="abawei-input" id="aprf-phone" type="tel" placeholder="+255 7XX XXX XXX"/></div>
+      </div>
+      <!-- NIDA -->
+      <div class="input-group">
+        <label class="input-label">${idCard(12)} &nbsp;NIDA Number</label>
+        <div class="input-wrap"><input class="abawei-input" id="aprf-nida" type="text" placeholder="XXXXXXXXXXXXXXXXXXX (19 digits)"/></div>
+      </div>
+      <!-- TIN -->
+      <div class="input-group">
+        <label class="input-label">${idCard(12)} &nbsp;TIN Number <span style="color:#555;font-size:10px;font-weight:500;">(if available)</span></label>
+        <div class="input-wrap"><input class="abawei-input" id="aprf-tin" type="text" placeholder="XXX-XXX-XXX"/></div>
+      </div>
+      <!-- Country -->
+      <div class="input-group">
+        <label class="input-label">${mapPin(12)} &nbsp;Country</label>
+        <div class="select-wrap"><select class="abawei-select" id="aprf-country">${countryOpts}</select></div>
+      </div>
+      <!-- Region -->
+      <div class="input-group">
+        <label class="input-label">Region</label>
+        <div class="select-wrap"><select class="abawei-select" id="aprf-region"><option value="">Select Region</option>${regOptions}</select></div>
+      </div>
+      <!-- District -->
+      <div class="input-group">
+        <label class="input-label">District</label>
+        <div class="input-wrap"><input class="abawei-input" id="aprf-district" type="text" placeholder="e.g. Kinondoni"/></div>
+      </div>
+      <!-- Street / Landmark -->
+      <div class="input-group">
+        <label class="input-label">${mapPin(12)} &nbsp;Street Address / Landmark</label>
+        <textarea class="abawei-textarea" id="aprf-address" placeholder="e.g. Msasani Road, near Msasani Shopping Mall, Dar es Salaam"></textarea>
+      </div>
+
+      <div style="padding:14px 16px;border-radius:14px;background:#0a0a0a;border:1px solid #1a1a1a;margin-bottom:20px;">
+        <p style="font-size:11px;color:#555;line-height:1.7;">
+          By registering, you agree to Abawei's <span style="color:#fcb500;">Terms of Service</span> and <span style="color:#fcb500;">Privacy Policy</span>. Your data is protected and used only for account and service purposes.
+        </p>
+      </div>
+
+      <button id="aprf-submit" class="btn-gold" style="margin-bottom:8px;">
+        Complete Registration ${arrow('#000',16)}
+      </button>
+      <button id="aprf-back" class="btn-ghost" style="display:block;color:#555;font-size:12px;text-align:center;width:100%;margin-top:8px;">← Back</button>
+    </div>`);
+
+  document.getElementById('aprf-back').addEventListener('click',()=>{AUTH_VIEW='verify';renderAuth();});
+  document.getElementById('aprf-submit').addEventListener('click',()=>{
+    const required=['aprf-name','aprf-phone','aprf-nida','aprf-district','aprf-address','aprf-region'];
+    for(const id of required){
+      const el=document.getElementById(id);
+      if(!el.value.trim()){
+        el.style.borderColor='#ff6b6b44';
+        el.scrollIntoView({behavior:'smooth',block:'center'});
+        toast('Please fill in all required fields.');
+        return;
+      }
+      el.style.borderColor='';
+    }
+    simulateLoading('aprf-submit',()=>{AUTH_VIEW='success';renderAuth();});
+  });
+}
+
+/* ── SUCCESS ─────────────────────────────────────────────────────── */
+function renderSuccess(){
+  C.innerHTML=`
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-check shown">✓</div>
+    <div style="text-align:center;animation:fadeUp .6s ease .3s both;opacity:0;">
+      ${badge('Registration Complete')}
+      <h2 style="font-size:28px;font-weight:900;color:#fff;margin-top:14px;letter-spacing:-1px;line-height:1.2;">
+        Welcome to<br><span style="color:#fcb500;">Abawei!</span>
+      </h2>
+      <p style="font-size:13px;color:#888;margin-top:12px;line-height:1.7;max-width:280px;margin-left:auto;margin-right:auto;">
+        Your account has been created. Confirmation has been sent to all your registered contact channels.
+      </p>
+
+      <div style="margin:24px 0;display:flex;flex-direction:column;gap:10px;max-width:320px;margin-left:auto;margin-right:auto;">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:#0a0a0a;border:1px solid #1a1a1a;">
+          <span style="font-size:18px;">📧</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#fff;">Email Notification Sent</div>
+            <div style="font-size:11px;color:#555;margin-top:1px;">${REGISTERED_EMAIL||'your@email.com'}</div>
+          </div>
+          <div style="margin-left:auto;">${chk('#2d9e60',14)}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:#0a0a0a;border:1px solid #1a1a1a;">
+          <span style="font-size:18px;">📱</span>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#fff;">SMS Notification Sent</div>
+            <div style="font-size:11px;color:#555;margin-top:1px;">To your registered phone</div>
+          </div>
+          <div style="margin-left:auto;">${chk('#2d9e60',14)}</div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div style="margin:10px 0 24px;">
+        <p style="font-size:11px;color:#555;margin-bottom:8px;">Taking you to your dashboard…</p>
+        <div style="height:3px;border-radius:2px;background:#111;overflow:hidden;">
+          <div id="prog-bar" style="height:100%;background:linear-gradient(90deg,#fcb500,#e6a300);border-radius:2px;width:0;animation:progressBar 2.5s ease forwards;"></div>
+        </div>
+      </div>
+
+      <button id="go-home-btn" class="btn-gold" style="max-width:280px;margin:0 auto;">
+        Go to Dashboard ${arrow('#000',16)}
+      </button>
+    </div>
+  </div>`;
+  setTimeout(()=>{PHASE='app';SCREEN='home';renderApp();},2700);
+  document.getElementById('go-home-btn').addEventListener('click',()=>{PHASE='app';SCREEN='home';renderApp();});
+}
+
+/* ── simulate button loading ─────────────────────────────────────── */
+function simulateLoading(btnId,cb,dur=1200){
+  const btn=document.getElementById(btnId);
+  if(!btn)return;
+  const orig=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML=`<div style="width:18px;height:18px;border:2.5px solid #00000044;border-top-color:#000;border-radius:50%;animation:spinGold .7s linear infinite;"></div>`;
+  setTimeout(()=>{btn.innerHTML=orig;btn.disabled=false;cb();},dur);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  APP
+// ═══════════════════════════════════════════════════════════════════════════
+function renderApp(){
+  C.innerHTML='';
+  const builders={home:buildHome,plan:buildPlan,comply:buildComply,brand:buildBrand,pricing:buildPricing};
+  C.appendChild((builders[SCREEN]||builders.home)());
+  renderNav();
+  if(SCREEN==='home') C.querySelectorAll('[data-counter]').forEach(el=>counter(el,parseInt(el.dataset.counter),el.dataset.suffix||''));
+}
+
+// ── HOME ───────────────────────────────────────────────────────────────────
+function buildHome(){
+  const w=document.createElement('div'); w.className='screen';
+  w.innerHTML=`
+    <div style="padding:52px 24px 28px;background:linear-gradient(180deg,#0d0a00 0%,#000 100%);position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#fcb50015,transparent 70%);filter:blur(30px);pointer-events:none;"></div>
+      ${badge('Tanzania · Est. 2012')}
+      <h1 style="font-size:30px;font-weight:900;color:#fff;margin-top:12px;letter-spacing:-1px;line-height:1.2;">Welcome to<br><span style="color:#fcb500;">Abawei</span></h1>
+      <p style="font-size:13px;color:#555;margin-top:6px;">Your business launchpad is ready.</p>
+      <div class="stat-grid">
+        <div class="stat-cell"><div class="stat-num" data-counter="2847" data-suffix="+">0+</div><div class="stat-lbl">Businesses Launched</div></div>
+        <div class="stat-cell"><div class="stat-num" data-counter="1204">0</div><div class="stat-lbl">Companies Registered</div></div>
+        <div class="stat-cell"><div class="stat-num" data-counter="938">0</div><div class="stat-lbl">Brands Created</div></div>
+      </div>
+    </div>
+
+    <div style="padding:28px 24px 0;">
+      <p class="section-label">Core Actions</p>
+      <div class="action-grid">
+        <div class="action-card" id="ac-plan" style="background:linear-gradient(135deg,#1a1200,#0d0900);">
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,#fcb50008,transparent);pointer-events:none;"></div>
+          <div style="font-size:22px;margin-bottom:10px;color:#fcb500;filter:drop-shadow(0 0 8px #fcb50088);">✦</div>
+          <div style="font-size:15px;font-weight:800;color:#fff;">Plan</div><div style="font-size:11px;color:#555;margin-top:3px;">Name &amp; Business Plan</div>
+        </div>
+        <div class="action-card" id="ac-comply">
+          <div style="font-size:22px;margin-bottom:10px;color:#fff;">⬡</div>
+          <div style="font-size:15px;font-weight:800;color:#fff;">Comply</div><div style="font-size:11px;color:#555;margin-top:3px;">Register Company</div>
+        </div>
+        <div class="action-card" id="ac-brand">
+          <div style="font-size:22px;margin-bottom:10px;color:#fcb500;">◈</div>
+          <div style="font-size:15px;font-weight:800;color:#fff;">Brand</div><div style="font-size:11px;color:#555;margin-top:3px;">Logo &amp; Website</div>
+        </div>
+        <div class="action-card" id="ac-pricing">
+          <div style="font-size:22px;margin-bottom:10px;color:#aaa;">▲</div>
+          <div style="font-size:15px;font-weight:800;color:#fff;">Plans</div><div style="font-size:11px;color:#555;margin-top:3px;">View Pricing</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:24px 24px 0;">
+      <div class="promo-banner">
+        <div class="promo-c1"></div><div class="promo-c2"></div>
+        ${badge('New · AI-Powered','#000')}
+        <h3 style="font-size:20px;font-weight:900;color:#000;margin-top:10px;letter-spacing:-.5px;font-family:'Alexandria',sans-serif;">Start with a Free<br>Business Name Today</h3>
+        <p style="font-size:12px;color:#00000099;margin-top:6px;">AI generates 20+ unique names for your business in seconds</p>
+        <button id="promo-btn" style="margin-top:18px;padding:10px 24px;border-radius:100px;background:#000;border:none;color:#fcb500;font-size:13px;font-weight:800;cursor:pointer;font-family:'Alexandria',sans-serif;display:inline-flex;align-items:center;gap:8px;">
+          Try Free ${arrow('#fcb500',14)}
+        </button>
+      </div>
+    </div>
+
+    <div style="padding:28px 24px 0;">
+      <p class="section-label">Live Activity</p>
+      <div class="activity-row"><div class="activity-icon">✦</div><div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">Zanzibar Spice Co.</div><div style="font-size:11px;color:#555;margin-top:1px;">Business Plan Generated</div></div><span style="font-size:10px;color:#444;">2m ago</span></div>
+      <div class="activity-row"><div class="activity-icon">⬡</div><div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">TechHub Dar</div><div style="font-size:11px;color:#555;margin-top:1px;">Company Registered</div></div><span style="font-size:10px;color:#444;">15m ago</span></div>
+      <div class="activity-row" style="border:none;"><div class="activity-icon">◈</div><div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#fff;">Kilimanjaro Foods</div><div style="font-size:11px;color:#555;margin-top:1px;">Logo &amp; Website Done</div></div><span style="font-size:10px;color:#444;">1h ago</span></div>
+    </div>`;
+
+  w.querySelector('#ac-plan').addEventListener('click',   ()=>{SCREEN='plan';   renderApp();});
+  w.querySelector('#ac-comply').addEventListener('click', ()=>{SCREEN='comply'; renderApp();});
+  w.querySelector('#ac-brand').addEventListener('click',  ()=>{SCREEN='brand';  renderApp();});
+  w.querySelector('#ac-pricing').addEventListener('click',()=>{SCREEN='pricing';renderApp();});
+  w.querySelector('#promo-btn').addEventListener('click', ()=>{SCREEN='plan';   renderApp();});
+  return w;
+}
+
+// ── PLAN ───────────────────────────────────────────────────────────────────
+const NAME_SAMPLES=['Zanzibar Digital Labs','Savanna Fintech Solutions','Kilimanjaro Ventures Ltd','Serengeti Brand Studio','Dar Innovate Hub','Tanzania Tech Forge','Coastal Nexus Group','Bahari Business Solutions'];
+function buildPlan(){
+  const w=document.createElement('div'); w.className='screen';
+  w.innerHTML=`
+    <div class="screen-header">${badge('Starter · Free')}
+      <h2 style="font-size:28px;font-weight:900;color:#fff;margin-top:10px;letter-spacing:-1px;line-height:1.2;">Plan Your<br><span style="color:#fcb500;">Business</span></h2>
+      ${goldLn()}
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn${PLAN_TAB===0?' active':''}" id="tab0">Name Generator</button>
+      <button class="tab-btn${PLAN_TAB===1?' active':''}" id="tab1">Business Plan</button>
+    </div>
+    <div style="padding:0 24px;" id="plan-body"></div>`;
+  w.querySelector('#tab0').addEventListener('click',()=>{PLAN_TAB=0;refreshPlan(w);});
+  w.querySelector('#tab1').addEventListener('click',()=>{PLAN_TAB=1;refreshPlan(w);});
+  refreshPlan(w); return w;
+}
+function refreshPlan(w){
+  w.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===PLAN_TAB));
+  const body=w.querySelector('#plan-body');
+  if(PLAN_TAB===0){
+    body.innerHTML=`
+      <p style="font-size:13px;color:#666;line-height:1.7;margin-bottom:20px;">Describe your business idea and our AI will generate unique, professional business names.</p>
+      <textarea class="abawei-textarea" id="name-input" placeholder="e.g. An online grocery delivery service targeting Dar es Salaam residents..."></textarea>
+      <button id="gen-btn" class="btn-gold" style="margin-top:12px;"><span style="font-size:15px;">✦</span><span id="gen-lbl">Generate Names</span></button>
+      <div id="name-results" style="margin-top:24px;display:flex;flex-direction:column;gap:10px;"></div>`;
+    w.querySelector('#gen-btn').addEventListener('click',()=>{
+      if(!w.querySelector('#name-input').value.trim())return;
+      const btn=w.querySelector('#gen-btn'),lbl=w.querySelector('#gen-lbl');
+      btn.style.cssText+=';background:#222;color:#555;box-shadow:none;';
+      lbl.textContent=' Generating...';
+      w.querySelector('#name-results').innerHTML='';
+      setTimeout(()=>{
+        btn.style.background='#fcb500';btn.style.color='#000';btn.style.boxShadow='';lbl.textContent='Generate Names';
+        [...NAME_SAMPLES].sort(()=>Math.random()-.5).slice(0,6).forEach((n,i)=>{
+          const c=document.createElement('div'); c.className='name-card anim-fadeUp'; c.style.animationDelay=`${i*65}ms`;
+          c.innerHTML=`<div><div class="name-card-title">${n}</div><div style="font-size:11px;color:#555;margin-top:2px;">Availability: Strong ✓</div></div><div style="font-size:13px;font-weight:800;color:#fcb500;">${Math.floor(Math.random()*20)+80}%</div>`;
+          w.querySelector('#name-results').appendChild(c);
+        });
+      },1800);
+    });
+  }else{
+    body.innerHTML=`
+      <div class="card-gold">
+        <div style="font-size:28px;color:#fcb500;margin-bottom:12px;">✦</div>
+        <h3 style="font-size:18px;font-weight:800;color:#fff;">Business Plan Generator</h3>
+        <p style="font-size:13px;color:#666;margin-top:8px;line-height:1.7;">Answer a few questions and we'll generate a full investor-ready business plan with market analysis, financial projections, and strategy.</p>
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+          ${['Executive Summary','Market Analysis','Financial Projections','Operations Plan','Marketing Strategy'].map(s=>`<div class="feat-row">${chk('#fcb500',14)}<span style="font-size:13px;color:#ccc;">${s}</span></div>`).join('')}
+        </div>
+        <button class="btn-gold" style="margin-top:24px;">Start Business Plan</button>
+      </div>`;
+  }
+}
+
+// ── COMPLY ─────────────────────────────────────────────────────────────────
+const COMPLY_DATA=[
+  {n:'01',t:'Choose Business Structure',d:'Sole proprietor, partnership, or limited company'},
+  {n:'02',t:'Business Name Reservation',d:'Reserve your name at BRELA Tanzania'},
+  {n:'03',t:'Prepare Documents',d:'ID copies, passport photos, Memorandum & Articles'},
+  {n:'04',t:'BRELA Registration',d:'Official company incorporation'},
+  {n:'05',t:'TRA Registration',d:'Tax Identification Number (TIN)'},
+  {n:'06',t:'Business Licence',d:'Local government business licence'},
+];
+function buildComply(){
+  const w=document.createElement('div'); w.className='screen';
+  const steps=COMPLY_DATA.map((s,i)=>`
+    <div class="step-row${i<COMPLY_DATA.length-1?' step-row-line':''}">
+      <div class="step-dot">${s.n}</div>
+      <div style="padding-top:8px;"><div style="font-size:14px;font-weight:700;color:#fff;">${s.t}</div><div style="font-size:12px;color:#555;margin-top:3px;">${s.d}</div></div>
+    </div>`).join('');
+  w.innerHTML=`
+    <div class="screen-header">${badge('Pro · Paid Plan')}
+      <h2 style="font-size:28px;font-weight:900;color:#fff;margin-top:10px;letter-spacing:-1px;line-height:1.2;">Comply &amp;<br>Register</h2>${goldLn()}
+      <p style="font-size:13px;color:#666;line-height:1.7;">Full company registration in Tanzania — we handle everything from BRELA to TRA.</p>
+    </div>
+    <div style="padding:0 24px;">${steps}
+      <div class="card-gold" style="margin-top:8px;">
+        <p style="font-size:12px;color:#888;line-height:1.7;">Our team of legal experts handles the entire process. You stay focused on your business.</p>
+        <div style="display:flex;align-items:baseline;gap:4px;margin-top:16px;">
+          <span style="font-size:11px;color:#666;font-weight:600;">TZS</span>
+          <span style="font-size:26px;font-weight:900;color:#fcb500;">149,000</span>
+          <span style="font-size:11px;color:#555;">/ one-time</span>
+        </div>
+        <button class="btn-gold" style="margin-top:16px;">Start Registration Process</button>
+      </div>
+    </div>`;
+  return w;
+}
+
+// ── BRAND ──────────────────────────────────────────────────────────────────
+const BRAND_DATA=[
+  {icon:'◈',title:'Logo Design',desc:'3 unique logo concepts crafted by designers'},
+  {icon:'▣',title:'Company Profile',desc:'Professional PDF profile for clients & partners'},
+  {icon:'⬡',title:'Website',desc:'Modern, mobile-ready website live in 7 days'},
+  {icon:'✦',title:'Brand Guidelines',desc:'Colors, fonts, and usage rules for your brand'},
+];
+const PORT_NAMES=['Zanzibar Tech','Savanna Foods','Dar Digital','Kilimanjaro Co.'];
+const PORT_GRADS=['linear-gradient(135deg,#1a0a00,#000)','linear-gradient(135deg,#001a0a,#000)','linear-gradient(135deg,#00101a,#000)','linear-gradient(135deg,#100018,#000)'];
+function buildBrand(){
+  const w=document.createElement('div'); w.className='screen';
+  const items=BRAND_DATA.map((it,i)=>`
+    <div class="brand-item anim-fadeUp" style="animation-delay:${i*80}ms;">
+      <div class="brand-item-icon">${it.icon}</div>
+      <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#fff;">${it.title}</div><div style="font-size:11px;color:#555;margin-top:2px;">${it.desc}</div></div>
+      <div style="font-size:10px;font-weight:700;color:#2d6a4f;background:#0a1f18;padding:3px 8px;border-radius:100px;white-space:nowrap;">Included</div>
+    </div>`).join('');
+  const portfolio=PORT_NAMES.map((n,i)=>`
+    <div class="portfolio-item" style="background:${PORT_GRADS[i]};">
+      <div style="font-size:22px;color:#fcb500;">✦</div>
+      <div style="font-size:10px;color:#555;font-weight:700;">${n}</div>
+    </div>`).join('');
+  w.innerHTML=`
+    <div class="screen-header">${badge('Premium · Paid Plan')}
+      <h2 style="font-size:28px;font-weight:900;color:#fff;margin-top:10px;letter-spacing:-1px;line-height:1.2;">Build Your<br><span style="color:#fcb500;">Brand Identity</span></h2>${goldLn()}
+      <p style="font-size:13px;color:#666;line-height:1.7;">Look like a market leader from day one with a complete brand identity package.</p>
+    </div>
+    <div style="padding:0 24px;display:flex;flex-direction:column;gap:12px;">
+      ${items}
+      <div><p class="section-label" style="margin-top:10px;">Recent Work</p><div class="portfolio-grid">${portfolio}</div></div>
+      <div class="card-gold">
+        <div style="display:flex;align-items:baseline;gap:4px;">
+          <span style="font-size:11px;color:#666;">TZS</span>
+          <span style="font-size:28px;font-weight:900;color:#fcb500;">299,000</span>
+          <span style="font-size:11px;color:#555;">/ one-time</span>
+        </div>
+        <p style="font-size:12px;color:#666;margin-top:6px;">Everything included. Ready in 7 business days.</p>
+        <button class="btn-gold" style="margin-top:16px;">Get Brand Package</button>
+      </div>
+    </div>`;
+  return w;
+}
+
+// ── PRICING ────────────────────────────────────────────────────────────────
+const PLANS_DATA=[
+  {step:'01',name:'Plan',tag:'Starter · Free',price:'Free',cur:'',color:'#fcb500',hi:false,
+   desc:'Start your business journey with AI-powered tools — no cost, no risk.',
+   feats:['AI Business Name Generator','Business Plan Generator','Market Overview','Financial Template'],cta:'Get Started Free'},
+  {step:'02',name:'Comply',tag:'Pro · Recommended',price:'149,000',cur:'TZS',color:'#ffffff',hi:true,
+   desc:'Full legal company registration in Tanzania — handled completely for you.',
+   feats:['BRELA Registration','TRA / TIN Number','Business Licence','Legal Documents','Compliance Calendar'],cta:'Get Comply Plan'},
+  {step:'03',name:'Brand',tag:'Premium',price:'299,000',cur:'TZS',color:'#fcb500',hi:false,
+   desc:'A complete brand identity that makes your business unforgettable.',
+   feats:['Custom Logo (3 concepts)','Company Profile PDF','Professional Website','Brand Guideline Kit','Social Media Kit'],cta:'Get Brand Plan'},
+];
+function buildPricing(){
+  const w=document.createElement('div'); w.className='screen';
+  const cards=PLANS_DATA.map((p,i)=>{
+    const priceHtml=p.price==='Free'
+      ?`<span style="font-size:26px;font-weight:900;color:${p.color};">Free</span>`
+      :`<div style="display:flex;align-items:baseline;gap:4px;"><span style="font-size:11px;color:#666;font-weight:600;">${p.cur}</span><span style="font-size:26px;font-weight:900;color:${p.color};">${p.price}</span><span style="font-size:11px;color:#555;">/one-time</span></div>`;
+    const feats=p.feats.map(f=>`<div class="feat-row" style="margin-bottom:8px;"><div class="feat-dot" style="background:${p.color}22;">${chk(p.color,10)}</div><span style="font-size:12px;color:#bbb;">${f}</span></div>`).join('');
+    return `
+      <div class="plan-card anim-fadeUp" style="background:${p.hi?'linear-gradient(135deg,#111,#0d0900)':'#080808'};border:${p.hi?'1.5px solid #fcb50066':'1px solid #1a1a1a'};box-shadow:${p.hi?'0 0 40px #fcb50018':'none'};animation-delay:${i*100}ms;">
+        ${p.hi?'<div class="plan-popular-tag">Most Popular</div>':''}
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <span style="font-size:11px;color:#555;font-weight:700;">${p.step}</span>
+          <div style="width:1px;height:12px;background:#333;"></div>
+          ${badge(p.tag,p.color)}
+        </div>
+        <h3 style="font-size:24px;font-weight:900;color:#fff;letter-spacing:-.5px;">${p.name}</h3>
+        <div style="margin-top:4px;">${priceHtml}</div>
+        <p style="font-size:12px;color:#666;margin-top:10px;line-height:1.6;">${p.desc}</p>
+        <div style="margin-top:16px;">${feats}</div>
+        <button class="${p.hi?'btn-gold':'btn-outline'}" style="margin-top:20px;">${p.cta}${p.hi?' '+arrow('#000',14):''}</button>
+      </div>`;
+  }).join('');
+  w.innerHTML=`
+    <div class="screen-header" style="text-align:center;">${badge('Pricing Plans')}
+      <h2 style="font-size:28px;font-weight:900;color:#fff;margin-top:10px;letter-spacing:-1px;line-height:1.2;">Start Free.<br>Scale with <span style="color:#fcb500;">Confidence.</span></h2>
+      <p style="font-size:13px;color:#666;margin-top:8px;line-height:1.7;">Three plans built for every stage of your business journey.</p>
+    </div>
+    <div style="padding:0 20px;display:flex;flex-direction:column;gap:16px;">${cards}</div>`;
+  return w;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════════════════════════════════
+renderSplash();
+</script>
+</body>
+</html>
